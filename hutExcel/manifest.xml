@@ -4,7 +4,7 @@
   <Version>1.0.0.0</Version>
   <ProviderName>Contoso</ProviderName>
   <DefaultLocale>en-US</DefaultLocale>
-  <DisplayName DefaultValue="Hut34 DataHut"/>
+  <DisplayName DefaultValue="Hut34 dataHut"/>
   <Description DefaultValue="A template to get started."/>
   <IconUrl DefaultValue="https://localhost:3000/assets/Hut34LogoWhiteonOrange32x32.png"/>
   <HighResolutionIconUrl DefaultValue="https://localhost:3000/assets/Hut34LogoWhiteonOrange80x80.png"/>
@@ -73,8 +73,8 @@
       </bt:Urls>
       <bt:ShortStrings>
         <bt:String id="GetStarted.Title" DefaultValue="Get started with hut34 data tools today!"/>
-        <bt:String id="CommandsGroup.Label" DefaultValue="hut34 Data Tools"/>
-        <bt:String id="TaskpaneButton.Label" DefaultValue="Show Taskpane"/>
+        <bt:String id="CommandsGroup.Label" DefaultValue="Agile data tools"/>
+        <bt:String id="TaskpaneButton.Label" DefaultValue="dataHut"/>
       </bt:ShortStrings>
       <bt:LongStrings>
         <bt:String id="GetStarted.Description" DefaultValue="Start sharing your data securely. Welcome to the world of agile data."/>
