@@ -61,8 +61,31 @@ function createTable() {
       });
 }
 
+//tim's tested function...
+
 function downloadDataset() {
   Excel.run(function (context) {
+
+    //retrieve dataset from dataHut
+    var request = require("request");
+    var options = { method: 'POST',
+      url: 'https://hut34datahub.appspot.com/user/downloadFile',
+      headers:
+          { 'postman-token': '77d3bea5-f7dd-59be-7aee-9605aa7278ee',
+            'cache-control': 'no-cache',
+            'content-type': 'application/json' },
+      body:
+          { token: 'ey blah blah blah',
+            accessToken: 'ya29.blah blah blah',
+            datasetId: '3htIYCymXD8evnf84MfT' },
+      json: true };
+    request(options, function (error, response, body) {
+      if (error) throw new Error(error);
+      console.log(body);
+    });
+
+    //todo calculate size of dataset rows and columns to set table size?
+    //todo find name of dataset to assign to hutDataset.name
 
     // TODO1: Queue table creation logic here.
     var currentWorksheet = context.workbook.worksheets.getActiveWorksheet();
