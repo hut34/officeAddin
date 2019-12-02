@@ -17,13 +17,14 @@ module.exports = async (env, options) => {
     resolve: {
       extensions: [".ts", ".tsx", ".html", ".js"]
     },
+
     module: {
       rules: [
         {
           test: /\.js$/,
           exclude: /node_modules/,
           use: {
-            loader: "babel-loader", 
+            loader: "babel-loader",
             options: {
               presets: ["@babel/preset-env"]
             }
@@ -62,10 +63,12 @@ module.exports = async (env, options) => {
     devServer: {
       headers: {
         "Access-Control-Allow-Origin": "*"
-      },      
+      },
+
       https: (options.https !== undefined) ? options.https : await devCerts.getHttpsServerOptions(),
       port: process.env.npm_package_config_dev_server_port || 3000
     }
+
   };
 
   return config;

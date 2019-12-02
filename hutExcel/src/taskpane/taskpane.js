@@ -3,6 +3,7 @@
  * See LICENSE in the project root for license information.
  */
 
+
 /* global console, document, Excel, Office */
 
 Office.onReady(info => {
@@ -67,16 +68,18 @@ function downloadDataset() {
   Excel.run(function (context) {
 
     //retrieve dataset from dataHut
-    var request = require("request");
-    var options = { method: 'POST',
+
+
+   var request = require("request");
+   var options = { method: 'POST',
       url: 'https://hut34datahub.appspot.com/user/downloadFile',
       headers:
           { 'postman-token': '77d3bea5-f7dd-59be-7aee-9605aa7278ee',
             'cache-control': 'no-cache',
             'content-type': 'application/json' },
       body:
-          { token: 'ey blah blah blah',
-            accessToken: 'ya29.blah blah blah',
+          { token: 'eyJhbGciOiJSUzI1NiIsImtpZCI6IjRhOWEzMGI5ZThkYTMxNjY2YTY3NTRkZWZlZDQxNzQzZjJlN2FlZWEiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiVGltIE1jTmFtYXJhIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS8tdVFSOXRjdTRUVTQvQUFBQUFBQUFBQUkvQUFBQUFBQUFBR28vVk03SUlJb2xKY1kvcGhvdG8uanBnIiwib3duZXIiOnRydWUsImFkbWluIjp0cnVlLCJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vaHV0MzRkYXRhaHViIiwiYXVkIjoiaHV0MzRkYXRhaHViIiwiYXV0aF90aW1lIjoxNTczMzc0ODU4LCJ1c2VyX2lkIjoieWhYQmdTb3VINGJBTGdYd282VngwbW9LSGpOMiIsInN1YiI6InloWEJnU291SDRiQUxnWHdvNlZ4MG1vS0hqTjIiLCJpYXQiOjE1NzUwNzI3ODksImV4cCI6MTU3NTA3NjM4OSwiZW1haWwiOiJ0aW1AaHV0MzQuaW8iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjExMzg3Nzk0Njc0Mjc1ODA3ODE0NyJdLCJlbWFpbCI6WyJ0aW1AaHV0MzQuaW8iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJnb29nbGUuY29tIn19.RwfBBrZ2DKuk7rGCPF1EOCRbpW9kJ8NsLvnfp0OLMxZMpoFEVAJ3fXWifreGWIYHpcbH9b3iYszz0mrFOvxQIZxEsNZR6y78uYgKiZkwgxn8xhQbdVv19hVdZg89XCwUtre7Bkw7W_rAQpSDp1hEmarS9BrRYNtVtZTYaVmnnArJo5f3QCXBMNbbqGlIF5zFcxYMhvbAcfAJH2tm9TZ7zaJ7ewEZ09ejilnkXq3BwpozUznHxr85GcIEH0c4QmKIp5VqPCX_MjCEcYTCv6hdwruF2cYZvJW4WOPDTISJPULY1Qq-AVC6By52DRoHWcY_yTBPHvQ-9Uf1gBkqCqnlOQ',
+            accessToken: 'ya29.ImCwB_nN3D8bqInzWEH5J-aPaGgotTxt3Y8ZQSO1RS7cxES5J-OT5XWRlQdyVcuv-gkc4ZqrJcbo6v-2fm46jFroml5yzCJIimyY7aXcLQDtpF-qK6ke5-TTYLWii2tJwss',
             datasetId: '3htIYCymXD8evnf84MfT' },
       json: true };
     request(options, function (error, response, body) {
