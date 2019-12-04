@@ -3,12 +3,10 @@
  * See LICENSE in the project root for license information.
  */
 
-
 /* global console, document, Excel, Office */
 
 Office.onReady(info => {
   if (info.host === Office.HostType.Excel) {
-
  // Determine if the user's version of Office supports all the Office.js APIs that are used in the tutorial.
     if (!Office.context.requirements.isSetSupported('ExcelApi', '1.7')) {
       console.log('Sorry. The tutorial add-in uses Excel.js APIs that are not available in your version of Office.');
@@ -16,12 +14,13 @@ Office.onReady(info => {
 
 // Assign event handlers and other initialization logic.
     document.getElementById("create-table").onclick = createTable;
-    document.getElementById("download-dataset").onclick = downloadDataset;
+    document.getElementById("downloadDataset").onclick = downloadDataset;
     document.getElementById("sideload-msg").style.display = "none";
     document.getElementById("app-body").style.display = "flex";
-
   }
 });
+
+
 
 function createTable() {
   Excel.run(function (context) {
@@ -62,16 +61,17 @@ function createTable() {
       });
 }
 
-//tim's tested function...
+//tim's test function...
+
 
 function downloadDataset() {
-  Excel.run(function (context) {
 
-    //retrieve dataset from dataHut
+    let request = require("request");
 
+    Excel.run(function (context) {
 
-   var request = require("request");
-   var options = { method: 'POST',
+    //1. retrieve dataset from dataHut
+    var options = { method: 'POST',
       url: 'https://hut34datahub.appspot.com/user/downloadFile',
       headers:
           { 'postman-token': '77d3bea5-f7dd-59be-7aee-9605aa7278ee',
@@ -82,6 +82,8 @@ function downloadDataset() {
             accessToken: 'ya29.ImCwB_nN3D8bqInzWEH5J-aPaGgotTxt3Y8ZQSO1RS7cxES5J-OT5XWRlQdyVcuv-gkc4ZqrJcbo6v-2fm46jFroml5yzCJIimyY7aXcLQDtpF-qK6ke5-TTYLWii2tJwss',
             datasetId: '3htIYCymXD8evnf84MfT' },
       json: true };
+
+
     request(options, function (error, response, body) {
       if (error) throw new Error(error);
       console.log(body);
@@ -90,35 +92,10 @@ function downloadDataset() {
     //todo calculate size of dataset rows and columns to set table size?
     //todo find name of dataset to assign to hutDataset.name
 
-    // TODO1: Queue table creation logic here.
-    var currentWorksheet = context.workbook.worksheets.getActiveWorksheet();
-    var hutDataset = currentWorksheet.tables.add("A1:D1", true /*hasHeaders*/);
-    hutDataset.name = "downloadedDataset";
-
-    // TODO2: Queue commands to populate the table with data.
-    hutDataset.getHeaderRowRange().values =
-        [["Date", "Driver", "Track", "Race"]];
-
-    hutDataset.rows.add(null /*add at the end*/, [
-      ["1/1/2017", "The Phone Company", "Communications", "120"],
-      ["1/2/2017", "Northwind Electric Cars", "Transportation", "142.33"],
-      ["1/5/2017", "Best For You Organics Company", "Groceries", "27.9"],
-      ["1/10/2017", "Coho Vineyard", "Restaurant", "33"],
-      ["1/11/2017", "Bellows College", "Education", "350.1"],
-      ["1/15/2017", "Trey Research", "Other", "135"],
-      ["1/15/2017", "Best For You Organics Company", "Groceries", "97.88"]
-    ]);
-
-    // TODO3: Queue commands to format the table.
-    hutDataset.columns.getItemAt(3).getRange().numberFormat = [['€#,##0.00']];
-    hutDataset.getRange().format.autofitColumns();
-    hutDataset.getRange().format.autofitRows();
-
-    return context.sync();
 
   })
       .catch(function (error) {
-        console.log("Error: " + error);
+        console.log("Error Tom: " + error);
         if (error instanceof OfficeExtension.Error) {
           console.log("Debug info: " + JSON.stringify(error.debugInfo));
         }
