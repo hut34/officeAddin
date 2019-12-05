@@ -21,21 +21,25 @@ Office.onReady(info => {
 });
 
 
+var expensesTable
 
 function createTable() {
+
+
   Excel.run(function (context) {
     // TODO1: Queue table creation logic here.
     var currentWorksheet = context.workbook.worksheets.getActiveWorksheet();
-    var expensesTable = currentWorksheet.tables.add("A1:D1", true /*hasHeaders*/);
+    expensesTable = currentWorksheet.tables.add("A1:D1", true /*hasHeaders*/);
     expensesTable.name = "ExpensesTable";
 
     // TODO2: Queue commands to populate the table with data.
+
 
     expensesTable.getHeaderRowRange().values =
         [["Date", "Merchant", "Category", "Amount"]];
 
     expensesTable.rows.add(null /*add at the end*/, [
-      ["1/1/2017", "The Phone Company", "Communications", "120"],
+      ["1/1/2017", "The Phone Company-doodle-don't", "Communications", "120"],
       ["1/2/2017", "Northwind Electric Cars", "Transportation", "142.33"],
       ["1/5/2017", "Best For You Organics Company", "Groceries", "27.9"],
       ["1/10/2017", "Coho Vineyard", "Restaurant", "33"],
@@ -44,11 +48,14 @@ function createTable() {
       ["1/15/2017", "Best For You Organics Company", "Groceries", "97.88"]
     ]);
 
-    // TODO3: Queue commands to format the table.
 
-    expensesTable.columns.getItemAt(3).getRange().numberFormat = [['€#,##0.00']];
-    expensesTable.getRange().format.autofitColumns();
-    expensesTable.getRange().format.autofitRows();
+    //add a timestmap from the backend
+      var getNumber = webRequest();
+
+      // TODO3: Queue commands to format the table.
+      /*expensesTable.columns.getItemAt(3).getRange().numberFormat = [['€#,##0.00']];
+      expensesTable.getRange().format.autofitColumns();
+      expensesTable.getRange().format.autofitRows();*/
 
 
     return context.sync();
@@ -100,4 +107,22 @@ function downloadDataset() {
           console.log("Debug info: " + JSON.stringify(error.debugInfo));
         }
       });
+}
+
+function webRequest() {
+    let url = "http://localhost:8080/alive";
+    return new Promise(function (resolve, reject) {
+        fetch(url)
+            .then(function (response){
+
+                expensesTable.rows.add(null /*add at the end*/, [
+                    [response.timestamp, "that's a timestamp", "Communications", "120"]
+                ]);
+                    return response.json();
+                }
+            )
+            .then(function (json) {
+                resolve(JSON.stringify(json.names));
+            })
+    })
 }
