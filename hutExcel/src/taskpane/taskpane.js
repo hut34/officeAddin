@@ -14,7 +14,8 @@ Office.onReady(info => {
 
 // Assign event handlers and other initialization logic.
     document.getElementById("create-table").onclick = createTable;
-    document.getElementById("downloadDataset").onclick = downloadDataset;
+    document.getElementById("getDatasets").onclick = getDatasets;
+    document.getElementById("getDataset").onclick = getDataset;
     document.getElementById("sideload-msg").style.display = "none";
     document.getElementById("app-body").style.display = "flex";
   }
@@ -23,10 +24,98 @@ Office.onReady(info => {
 
 var expensesTable
 
+var apiURL = "http://localhost:8080"
+
+var idToken = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjA0NjUxMTM5ZDg4NzUyYjY0OTM0MjUzNGE2YjRhMDUxMjVkNzhmYmIiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiUGV0ZXIgR29kYm9sdCIsInBpY3R1cmUiOiJodHRwczovL2xoNS5nb29nbGV1c2VyY29udGVudC5jb20vLXdaeElGR2F1RHVnL0FBQUFBQUFBQUFJL0FBQUFBQUFBQUFjL3M3dFF0OFdkXzV3L3Bob3RvLmpwZyIsIm93bmVyIjp0cnVlLCJhZG1pbiI6dHJ1ZSwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL3N0YW5kYXJkZGF0YWh1YiIsImF1ZCI6InN0YW5kYXJkZGF0YWh1YiIsImF1dGhfdGltZSI6MTU3NTU4OTU2NSwidXNlcl9pZCI6IklkbWlKSTNPbXlSWTRkZ0txZzdpRXRMTG1ZcDEiLCJzdWIiOiJJZG1pSkkzT215Ulk0ZGdLcWc3aUV0TExtWXAxIiwiaWF0IjoxNTc1NTg5NTY2LCJleHAiOjE1NzU1OTMxNjYsImVtYWlsIjoicGV0ZXJAaHV0MzQuaW8iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjExMzI2ODUyODQ1Mzc2NjYyMzcyNyJdLCJlbWFpbCI6WyJwZXRlckBodXQzNC5pbyJdfSwic2lnbl9pbl9wcm92aWRlciI6Imdvb2dsZS5jb20ifX0.yQ599CmSAnCFSHEPxFQc6GSsupcBjves6weZN3jjUzJOaUzr0TKDYcUk-Z_OvcLgowFn-zIOmFHdSvZHfpPKDjkLIjUSFHMwA-h_R6QvT-1p2iaexDUbwQYvs0Unfj_U44Cuq7a-6quI639WWDY7W0RZ7cPPyj35Odj0esuh9Zf5sMqPGklHvQ40M_c8-SqEKc6XI2c2qBN2Ohg-pvM4rbLM22KsfsGGkbYypAaIkxdXJT6ayWLveD2Kmz-dJudQO6zU3npwgC5yYABI8gahRUkyUw91RHavylmYLYmOaEC4EFl1HggRhwlvDvDrBiKhpSW70XxOThJrU-po2--q4Q"
+var accessToken = "ya29.ImG0B-64gC2L43v4-pOIxHNc_hvy8WdKb6fh2AiWkbvhFxk8AiGOAtmu3GyrYNNzoPvqNHkQTeJTc0fKdMpqa1HWLTRD_sz0fmw10uhVXAB_edU4f-inxII5pIzFEp7wSwtN"
+
+async function getDatasets() {
+
+    console.log('getting datasets')
+    //gets all available datasets from the hub
+    const response = await fetch('http://localhost:8080/user/getDatasets',
+        {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "accessToken": accessToken,
+                "token": idToken
+            })
+        });
+    const myJson = await response.json();
+    console.log(JSON.stringify(myJson));
+
+    /*
+    const response = await fetch(apiURL+'/alive', {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    });
+
+    const myJson = await response.json();
+    console.log(JSON.stringify(myJson));
+*/
+}
+
+async function getDataset() {
+
+    var datasetId = 'U8VVNwv9UCGqGwlgwmgl'
+    console.log('getting dataset ')
+
+    //gets all available datasets from the hub
+    const response = await fetch('http://localhost:8080/user/downloadFile',
+        {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "accessToken": accessToken,
+                "token": idToken,
+                "dataSetId": datasetId
+            })
+        });
+    const myJson = await response.json();
+    console.log(JSON.stringify(myJson));
+
+
+    //the rows are in myJson.data
+    Excel.run(async function (context) {
+        // TODO1: Queue table creation logic here.
+        var currentWorksheet = context.workbook.worksheets.getActiveWorksheet();
+        dataTable = currentWorksheet.tables.add("A1:G1", false /*hasHeaders*/);
+        dataTable.name = "Hut34Data";
+
+        /*
+        dataTable.getHeaderRowRange().values =
+            [["1", "2", "3", "4"]];
+        */
+
+        dataTable.rows.add(null /*add at the end*/, myJson.data);
+
+        return context.sync();
+    })
+        .catch(function (error) {
+            console.log("Error: " + error);
+            if (error instanceof OfficeExtension.Error) {
+                console.log("Debug info: " + JSON.stringify(error.debugInfo));
+            }
+        });
+
+    return
+}
+
 function createTable() {
 
 
-  Excel.run(function (context) {
+  Excel.run(async function (context) {
     // TODO1: Queue table creation logic here.
     var currentWorksheet = context.workbook.worksheets.getActiveWorksheet();
     expensesTable = currentWorksheet.tables.add("A1:D1", true /*hasHeaders*/);
@@ -39,7 +128,7 @@ function createTable() {
         [["Date", "Merchant", "Category", "Amount"]];
 
     expensesTable.rows.add(null /*add at the end*/, [
-      ["1/1/2017", "The Phone Company-doodle-don't", "Communications", "120"],
+      ["1/1/2017", "The Phone Company-doodlebee", "Communications", "120"],
       ["1/2/2017", "Northwind Electric Cars", "Transportation", "142.33"],
       ["1/5/2017", "Best For You Organics Company", "Groceries", "27.9"],
       ["1/10/2017", "Coho Vineyard", "Restaurant", "33"],
@@ -50,7 +139,12 @@ function createTable() {
 
 
     //add a timestmap from the backend
-      var getNumber = webRequest();
+/*
+
+      const response = await fetch('http://localhost:8080/alive');
+      const myJson = await response.json();
+      console.log(JSON.stringify(myJson));
+*/
 
       // TODO3: Queue commands to format the table.
       /*expensesTable.columns.getItemAt(3).getRange().numberFormat = [['€#,##0.00']];
@@ -109,15 +203,10 @@ function downloadDataset() {
       });
 }
 
-function webRequest() {
-    let url = "http://localhost:8080/alive";
+function webRequest(url, data) {
     return new Promise(function (resolve, reject) {
         fetch(url)
             .then(function (response){
-
-                expensesTable.rows.add(null /*add at the end*/, [
-                    [response.timestamp, "that's a timestamp", "Communications", "120"]
-                ]);
                     return response.json();
                 }
             )
