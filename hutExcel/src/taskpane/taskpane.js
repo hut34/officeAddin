@@ -26,14 +26,15 @@ var expensesTable
 
 var apiURL = "http://localhost:8080"
 
-var idToken = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjA0NjUxMTM5ZDg4NzUyYjY0OTM0MjUzNGE2YjRhMDUxMjVkNzhmYmIiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiUGV0ZXIgR29kYm9sdCIsInBpY3R1cmUiOiJodHRwczovL2xoNS5nb29nbGV1c2VyY29udGVudC5jb20vLXdaeElGR2F1RHVnL0FBQUFBQUFBQUFJL0FBQUFBQUFBQUFjL3M3dFF0OFdkXzV3L3Bob3RvLmpwZyIsIm93bmVyIjp0cnVlLCJhZG1pbiI6dHJ1ZSwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL3N0YW5kYXJkZGF0YWh1YiIsImF1ZCI6InN0YW5kYXJkZGF0YWh1YiIsImF1dGhfdGltZSI6MTU3NTU4OTU2NSwidXNlcl9pZCI6IklkbWlKSTNPbXlSWTRkZ0txZzdpRXRMTG1ZcDEiLCJzdWIiOiJJZG1pSkkzT215Ulk0ZGdLcWc3aUV0TExtWXAxIiwiaWF0IjoxNTc1NTg5NTY2LCJleHAiOjE1NzU1OTMxNjYsImVtYWlsIjoicGV0ZXJAaHV0MzQuaW8iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjExMzI2ODUyODQ1Mzc2NjYyMzcyNyJdLCJlbWFpbCI6WyJwZXRlckBodXQzNC5pbyJdfSwic2lnbl9pbl9wcm92aWRlciI6Imdvb2dsZS5jb20ifX0.yQ599CmSAnCFSHEPxFQc6GSsupcBjves6weZN3jjUzJOaUzr0TKDYcUk-Z_OvcLgowFn-zIOmFHdSvZHfpPKDjkLIjUSFHMwA-h_R6QvT-1p2iaexDUbwQYvs0Unfj_U44Cuq7a-6quI639WWDY7W0RZ7cPPyj35Odj0esuh9Zf5sMqPGklHvQ40M_c8-SqEKc6XI2c2qBN2Ohg-pvM4rbLM22KsfsGGkbYypAaIkxdXJT6ayWLveD2Kmz-dJudQO6zU3npwgC5yYABI8gahRUkyUw91RHavylmYLYmOaEC4EFl1HggRhwlvDvDrBiKhpSW70XxOThJrU-po2--q4Q"
-var accessToken = "ya29.ImG0B-64gC2L43v4-pOIxHNc_hvy8WdKb6fh2AiWkbvhFxk8AiGOAtmu3GyrYNNzoPvqNHkQTeJTc0fKdMpqa1HWLTRD_sz0fmw10uhVXAB_edU4f-inxII5pIzFEp7wSwtN"
+var accessToken = "ya29.a0Adw1xeWJyfcoqPpQeS_RTyEeXeWusirBxPb5CeE-OPnKvExrvSaGWAZUqunPAmARPo6x50X9U7yhbzOujT5I54mY81slm31NaqgISUuZjx7666xvliISNnaPhG5q-JbM517AeSy5ld2OniJ0yksmB1ugwXYW3SwjbL7K"
+var idToken = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjgyZTZiMWM5MjFmYTg2NzcwZjNkNTBjMTJjMTVkNmVhY2E4ZjBkMzUiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiUGV0ZXIgR29kYm9sdCIsInBpY3R1cmUiOiJodHRwczovL2xoNC5nb29nbGV1c2VyY29udGVudC5jb20vLWhUVXhvbUJzQ3lrL0FBQUFBQUFBQUFJL0FBQUFBQUFBQUFBL0FDSGkzcmN4b211dEM1NDNMNkpBWTROOFhNaVpsbHkwRUEvcGhvdG8uanBnIiwiYWRtaW4iOmZhbHNlLCJvd25lciI6ZmFsc2UsImFwcHJvdmVkVXNlciI6dHJ1ZSwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL3NwZWVkZ2FzZGF0YWh1dCIsImF1ZCI6InNwZWVkZ2FzZGF0YWh1dCIsImF1dGhfdGltZSI6MTU4NDA3NDAyMCwidXNlcl9pZCI6IlFLU3RjS3VTUTJOd3BObzBxcGdsNU1VazFFSjMiLCJzdWIiOiJRS1N0Y0t1U1EyTndwTm8wcXBnbDVNVWsxRUozIiwiaWF0IjoxNTg0MDc0MDIxLCJleHAiOjE1ODQwNzc2MjEsImVtYWlsIjoicGV0ZXJnb2Rib2x0QGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7Imdvb2dsZS5jb20iOlsiMTE1NTExNTkwNzE1MjQ5OTkyOTUyIl0sImVtYWlsIjpbInBldGVyZ29kYm9sdEBnbWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJnb29nbGUuY29tIn19.TW8dqOkRExBwJHmGVtD09if1hAI7qZd1_Dwg-Ik3DxxkUYulZs4cn0R-MVFFSmljkCpexRNtSjzSQ82dTXoTk3N4QPjaKHDbVPhGTmtHDHshhWo3BnH3w6eneBqYowxQsC93v5NXJFF6xpe5LAgDEK6Q6MvP4m0AyR9uPpHjd1_4MfjvcfTLibYOTlB9aBib4BrYr6QIAiqE9SYq6icRUR1q7iu6kS1eILIYKKQMQsf0s3TU91_VzTdqQkLlAtJmdTCm7w5ZFcpEDznqNpSuFf6SASMtnScjCOMQ12uvnr_x233Cx-x5725XEtHajCE2j1KCF6YOOqKiZZfb5cPhjA"
+
 
 async function getDatasets() {
 
     console.log('getting datasets')
     //gets all available datasets from the hub
-    const response = await fetch('http://localhost:8080/user/getDatasets',
+    const response = await fetch('http://localhost:8080/user/getDatasetsToDownload',
         {
             method: 'POST',
             headers: {
@@ -65,7 +66,7 @@ async function getDatasets() {
 
 async function getDataset() {
 
-    var datasetId = 'U8VVNwv9UCGqGwlgwmgl'
+    var datasetId = '1d1o9ShF9pyACrugD6dH'
     console.log('getting dataset ')
 
     //gets all available datasets from the hub
@@ -83,22 +84,31 @@ async function getDataset() {
             })
         });
     const myJson = await response.json();
-    console.log(JSON.stringify(myJson));
+    //console.log(JSON.stringify(myJson));
+    console.log('got the data')
+    //console.log(myJson.header.length)
 
+    let letter = myJson.header.length + 64
 
     //the rows are in myJson.data
     Excel.run(async function (context) {
         // TODO1: Queue table creation logic here.
         var currentWorksheet = context.workbook.worksheets.getActiveWorksheet();
-        dataTable = currentWorksheet.tables.add("A1:G1", false /*hasHeaders*/);
+        dataTable = currentWorksheet.tables.add("A1:"+String.fromCharCode(letter)+"1", true /*hasHeaders*/);
         dataTable.name = "Hut34Data";
 
-        /*
-        dataTable.getHeaderRowRange().values =
-            [["1", "2", "3", "4"]];
-        */
+        let i = 0
+        let headers = []
+        while (i < myJson.header.length) {
+            headers.push(myJson.header[i].name)
+            i+=1
+        }
 
+        dataTable.getHeaderRowRange().values = [ headers ]
         dataTable.rows.add(null /*add at the end*/, myJson.data);
+
+        dataTable.getRange().format.autofitColumns();
+        dataTable.getRange().format.autofitRows();
 
         return context.sync();
     })
