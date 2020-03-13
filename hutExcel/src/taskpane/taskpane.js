@@ -14,8 +14,10 @@ Office.onReady(info => {
 
 // Assign event handlers and other initialization logic.
     document.getElementById("create-table").onclick = createTable;
-    document.getElementById("getDatasets").onclick = getDatasets;
+    document.getElementById("getDatasets").onclick = getDatasetsToDownload;
+      document.getElementById("getDatasetsToPurchase").onclick = getDatasetsToPurchase;
     document.getElementById("getDataset").onclick = getDataset;
+      document.getElementById("deleteDataset").onclick = deleteDataset;
     document.getElementById("sideload-msg").style.display = "none";
     document.getElementById("app-body").style.display = "flex";
   }
@@ -23,12 +25,79 @@ Office.onReady(info => {
 
 
 var expensesTable
+var dataTable
 
 var apiURL = "http://localhost:8080"
 
 var accessToken = "ya29.a0Adw1xeWJyfcoqPpQeS_RTyEeXeWusirBxPb5CeE-OPnKvExrvSaGWAZUqunPAmARPo6x50X9U7yhbzOujT5I54mY81slm31NaqgISUuZjx7666xvliISNnaPhG5q-JbM517AeSy5ld2OniJ0yksmB1ugwXYW3SwjbL7K"
 var idToken = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjgyZTZiMWM5MjFmYTg2NzcwZjNkNTBjMTJjMTVkNmVhY2E4ZjBkMzUiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiUGV0ZXIgR29kYm9sdCIsInBpY3R1cmUiOiJodHRwczovL2xoNC5nb29nbGV1c2VyY29udGVudC5jb20vLWhUVXhvbUJzQ3lrL0FBQUFBQUFBQUFJL0FBQUFBQUFBQUFBL0FDSGkzcmN4b211dEM1NDNMNkpBWTROOFhNaVpsbHkwRUEvcGhvdG8uanBnIiwiYWRtaW4iOmZhbHNlLCJvd25lciI6ZmFsc2UsImFwcHJvdmVkVXNlciI6dHJ1ZSwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL3NwZWVkZ2FzZGF0YWh1dCIsImF1ZCI6InNwZWVkZ2FzZGF0YWh1dCIsImF1dGhfdGltZSI6MTU4NDA3NDAyMCwidXNlcl9pZCI6IlFLU3RjS3VTUTJOd3BObzBxcGdsNU1VazFFSjMiLCJzdWIiOiJRS1N0Y0t1U1EyTndwTm8wcXBnbDVNVWsxRUozIiwiaWF0IjoxNTg0MDc0MDIxLCJleHAiOjE1ODQwNzc2MjEsImVtYWlsIjoicGV0ZXJnb2Rib2x0QGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7Imdvb2dsZS5jb20iOlsiMTE1NTExNTkwNzE1MjQ5OTkyOTUyIl0sImVtYWlsIjpbInBldGVyZ29kYm9sdEBnbWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJnb29nbGUuY29tIn19.TW8dqOkRExBwJHmGVtD09if1hAI7qZd1_Dwg-Ik3DxxkUYulZs4cn0R-MVFFSmljkCpexRNtSjzSQ82dTXoTk3N4QPjaKHDbVPhGTmtHDHshhWo3BnH3w6eneBqYowxQsC93v5NXJFF6xpe5LAgDEK6Q6MvP4m0AyR9uPpHjd1_4MfjvcfTLibYOTlB9aBib4BrYr6QIAiqE9SYq6icRUR1q7iu6kS1eILIYKKQMQsf0s3TU91_VzTdqQkLlAtJmdTCm7w5ZFcpEDznqNpSuFf6SASMtnScjCOMQ12uvnr_x233Cx-x5725XEtHajCE2j1KCF6YOOqKiZZfb5cPhjA"
 
+function deleteDataset() {
+    console.log('deleting')
+
+    Excel.run(async function (context) {
+        dataTable.delete();
+        return context.sync();
+    })
+        .catch(function (error) {
+            console.log("Error: " + error);
+            if (error instanceof OfficeExtension.Error) {
+                console.log("Debug info: " + JSON.stringify(error.debugInfo));
+            }
+        });
+
+    return
+}
+
+async function getDatasetsToDownload() {
+
+    console.log('getting list of datasets available immediately to download')
+
+    console.log('getting datasets')
+    //gets all available datasets from the hub
+    const response = await fetch('http://localhost:8080/user/getDatasetsToDownload',
+        {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "accessToken": accessToken,
+                "token": idToken
+            })
+        });
+
+    const myJson = await response.json();
+    console.log(JSON.stringify(myJson));
+
+    return
+
+}
+
+async function getDatasetsToPurchase() {
+
+    console.log('getting list of datasets to purchase')
+    //gets all available datasets from the hub
+    const response = await fetch('http://localhost:8080/user/getDatasetsToPurchase',
+        {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "accessToken": accessToken,
+                "token": idToken
+            })
+        });
+
+    const myJson = await response.json();
+    console.log(JSON.stringify(myJson));
+
+    return
+
+}
 
 async function getDatasets() {
 
