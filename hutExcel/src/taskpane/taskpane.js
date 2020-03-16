@@ -181,9 +181,7 @@ async function uploadDataset() {
 
                 })
 
-
-                let options = ''
-                sendToTheHut(hutHeaders, bodyValues, options)
+                sendToTheHut(hutHeaders, bodyValues)
             });
     }).catch();
 
@@ -237,11 +235,31 @@ function createTable() {
       });
 }
 
-async function sendToTheHut(cols, rows, opts) {
+async function sendToTheHut(cols, rows) {
 
-    console.log('any good?')
-    console.log(cols)
-    console.log(rows)
+    let data = {}
 
 
+    data.name = "Dataset created from Excel, derived from "+datasetId
+    data.header = cols
+    data.data = rows
+    data.coverImage = "https://images.unsplash.com/photo-1529078155058-5d716f45d604?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1349&q=80"
+
+
+    const response = await fetch(apiURL+'/user/createDataset',
+        {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "accessToken": accessToken,
+                "token": idToken,
+                "data": data
+            })
+        });
+    const myJson = await response.json();
+    console.log(myJson)
+    return myJson
 }
