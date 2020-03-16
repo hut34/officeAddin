@@ -13,24 +13,34 @@ Office.onReady(info => {
     }
 
 // Assign event handlers and other initialization logic.
-    document.getElementById("create-table").onclick = createTable;
+
     document.getElementById("getDatasets").onclick = getDatasetsToDownload;
-      document.getElementById("getDatasetsToPurchase").onclick = getDatasetsToPurchase;
+    document.getElementById("getDatasetsToPurchase").onclick = getDatasetsToPurchase;
     document.getElementById("getDataset").onclick = getDataset;
-      document.getElementById("deleteDataset").onclick = deleteDataset;
+
+    document.getElementById("getDatasetButton").onclick = getDataset;
     document.getElementById("sideload-msg").style.display = "none";
     document.getElementById("app-body").style.display = "flex";
   }
 });
 
 
-var expensesTable
-var dataTable
+var dataTable, datasetId
+var my = {}
 
-var apiURL = "http://localhost:8080"
+var apiURL = "https://hut34datahub.appspot.com"
 
-var accessToken = "ya29.a0Adw1xeWJyfcoqPpQeS_RTyEeXeWusirBxPb5CeE-OPnKvExrvSaGWAZUqunPAmARPo6x50X9U7yhbzOujT5I54mY81slm31NaqgISUuZjx7666xvliISNnaPhG5q-JbM517AeSy5ld2OniJ0yksmB1ugwXYW3SwjbL7K"
-var idToken = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjgyZTZiMWM5MjFmYTg2NzcwZjNkNTBjMTJjMTVkNmVhY2E4ZjBkMzUiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiUGV0ZXIgR29kYm9sdCIsInBpY3R1cmUiOiJodHRwczovL2xoNC5nb29nbGV1c2VyY29udGVudC5jb20vLWhUVXhvbUJzQ3lrL0FBQUFBQUFBQUFJL0FBQUFBQUFBQUFBL0FDSGkzcmN4b211dEM1NDNMNkpBWTROOFhNaVpsbHkwRUEvcGhvdG8uanBnIiwiYWRtaW4iOmZhbHNlLCJvd25lciI6ZmFsc2UsImFwcHJvdmVkVXNlciI6dHJ1ZSwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL3NwZWVkZ2FzZGF0YWh1dCIsImF1ZCI6InNwZWVkZ2FzZGF0YWh1dCIsImF1dGhfdGltZSI6MTU4NDA3NDAyMCwidXNlcl9pZCI6IlFLU3RjS3VTUTJOd3BObzBxcGdsNU1VazFFSjMiLCJzdWIiOiJRS1N0Y0t1U1EyTndwTm8wcXBnbDVNVWsxRUozIiwiaWF0IjoxNTg0MDc0MDIxLCJleHAiOjE1ODQwNzc2MjEsImVtYWlsIjoicGV0ZXJnb2Rib2x0QGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7Imdvb2dsZS5jb20iOlsiMTE1NTExNTkwNzE1MjQ5OTkyOTUyIl0sImVtYWlsIjpbInBldGVyZ29kYm9sdEBnbWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJnb29nbGUuY29tIn19.TW8dqOkRExBwJHmGVtD09if1hAI7qZd1_Dwg-Ik3DxxkUYulZs4cn0R-MVFFSmljkCpexRNtSjzSQ82dTXoTk3N4QPjaKHDbVPhGTmtHDHshhWo3BnH3w6eneBqYowxQsC93v5NXJFF6xpe5LAgDEK6Q6MvP4m0AyR9uPpHjd1_4MfjvcfTLibYOTlB9aBib4BrYr6QIAiqE9SYq6icRUR1q7iu6kS1eILIYKKQMQsf0s3TU91_VzTdqQkLlAtJmdTCm7w5ZFcpEDznqNpSuFf6SASMtnScjCOMQ12uvnr_x233Cx-x5725XEtHajCE2j1KCF6YOOqKiZZfb5cPhjA"
+var accessToken = "ya29.a0Adw1xeUMf-cx1o2DYA8MLsoeCxdXOjDbIwa1oL_ez0LWsfHR_fJMd_7FKdp51QPHekiwELjFgPE6ZBBC0X39TDgbYRS4WyLpq25JfsAILHFLw1gxSIPIP9ebsIH7Er3AfE1YxreuyJVMQx1PfzboNm_r-F3nNxf8_a6v1g"
+var idToken = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjgyZTZiMWM5MjFmYTg2NzcwZjNkNTBjMTJjMTVkNmVhY2E4ZjBkMzUiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiUGV0ZXIgR29kYm9sdCIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS0vQUF1RTdtRFR1YTcyM19USnpKUFBZMHNRM3VMQ0tvck5kdWRwR09GTzM1VlMiLCJwdWJsaWMiOmZhbHNlLCJhZG1pbiI6dHJ1ZSwib3duZXIiOnRydWUsImFwcHJvdmVkVXNlciI6dHJ1ZSwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL2h1dDM0ZGF0YWh1YiIsImF1ZCI6Imh1dDM0ZGF0YWh1YiIsImF1dGhfdGltZSI6MTU4NDMyNDU5NywidXNlcl9pZCI6IlVPdWphdk10VkpZT3VHM3NwYzROZFF6MWF1ajIiLCJzdWIiOiJVT3VqYXZNdFZKWU91RzNzcGM0TmRRejFhdWoyIiwiaWF0IjoxNTg0MzI0NjAwLCJleHAiOjE1ODQzMjgyMDAsImVtYWlsIjoicGV0ZXJAaHV0MzQuaW8iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjExMzI2ODUyODQ1Mzc2NjYyMzcyNyJdLCJlbWFpbCI6WyJwZXRlckBodXQzNC5pbyJdfSwic2lnbl9pbl9wcm92aWRlciI6Imdvb2dsZS5jb20ifX0.p4hYiWzRV5fCGSF5sMJ8x_kfgx-EmLu9arcTt_iNoe8bmjr8Cuf1atleC70CVfNeV3GB7ODdeeJrZety9R96MV-vt2fZ8TSzmTPc1I3jWukVyP_xjhDRHgm1pcsl90Kcj9xNe4dVDsX760WnaitRJ-kYEhDsCviNUsFca5ezGoyecCbI8dNoZwwKUGOIlLAaIP58zKY4YFmVH1n7TaJUIwgFeuSXedSmittZy7ip7aYGLw2Jp2j0Qv7mhhPlZMXJVs8guIsiKt2aCRmD6oghPEqWlwMs1QgykSk2nV6aU7CQbUnCSX4wHyZy57Jw708fxdqjsip-mcxKg0Fun7onKA"
+
+function nameDataset() {
+
+    console.log('naming the puppy')
+    document.getElementById("datasetName").innerHTML="George";
+    document.getElementById("listOfDatasets").style = "display:block;";
+
+
+}
 
 function deleteDataset() {
     console.log('deleting')
@@ -51,11 +61,10 @@ function deleteDataset() {
 
 async function getDatasetsToDownload() {
 
-    console.log('getting list of datasets available immediately to download')
 
-    console.log('getting datasets')
+    console.log('getting list of datasets available immediately to download')
     //gets all available datasets from the hub
-    const response = await fetch('http://localhost:8080/user/getDatasetsToDownload',
+    const response = await fetch(apiURL+'/user/getDatasetsToDownload',
         {
             method: 'POST',
             headers: {
@@ -69,7 +78,33 @@ async function getDatasetsToDownload() {
         });
 
     const myJson = await response.json();
-    console.log(JSON.stringify(myJson));
+    //console.log(JSON.stringify(myJson));
+
+    var ul = document.getElementById("theList");
+
+    myJson.forEach(function(dataset) {
+        console.log(dataset.data.name)
+        var li = document.createElement("li");
+        li.className = "ms-ListItem is-unread"
+        li.innerHTML = '' +
+            '                <span class="ms-ListItem-primaryText" id="datasetName">'+ dataset.data.name +'</span>\n' +
+            '                <!-- <span class="ms-ListItem-secondaryText">Meeting notes</span> -->\n' +
+            '                <span class="ms-ListItem-tertiaryText">'+ dataset.id+'</span>\n' +
+            '                <span class="ms-ListItem-metaText" id="time">'+ dataset.data.ENTRPPrice +'</span>\n' +
+            '                <div class="ms-ListItem-selectionTarget"></div>\n' +
+            '                <div class="ms-ListItem-actions">\n' +
+            '                    <div class="ms-ListItem-action">\n' +
+            '                        <i class="ms-Icon ms-Icon--Pinned"></i>\n' +
+            '                    </div>\n' +
+            '                </div>\n'
+        ul.appendChild(li);
+    })
+
+    document.getElementById("listOfDatasets").style = "display:block;";
+
+    //add to the list
+
+
 
     return
 
@@ -135,11 +170,14 @@ async function getDatasets() {
 
 async function getDataset() {
 
-    var datasetId = '1d1o9ShF9pyACrugD6dH'
+
+    datasetId = document.getElementById("inputDatasetId").value;
+
+    if (!datasetId) { datasetId = 'JULFH7RY5oG9sTEaZaxe' }
     console.log('getting dataset ')
 
     //gets all available datasets from the hub
-    const response = await fetch('http://localhost:8080/user/downloadFile',
+    const response = await fetch(apiURL+'/user/downloadFile',
         {
             method: 'POST',
             headers: {
