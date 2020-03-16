@@ -15,9 +15,6 @@ Office.onReady(info => {
 // Assign event handlers and other initialization logic.
 
     document.getElementById("getDatasets").onclick = getDatasetsToDownload;
-    document.getElementById("getDatasetsToPurchase").onclick = getDatasetsToPurchase;
-    document.getElementById("getDataset").onclick = getDataset;
-
     document.getElementById("getDatasetButton").onclick = getDataset;
     document.getElementById("sideload-msg").style.display = "none";
     document.getElementById("app-body").style.display = "flex";
@@ -25,13 +22,7 @@ Office.onReady(info => {
 });
 
 
-var dataTable, datasetId
-var my = {}
-
-var apiURL = "https://hut34datahub.appspot.com"
-
-var accessToken = "ya29.a0Adw1xeUMf-cx1o2DYA8MLsoeCxdXOjDbIwa1oL_ez0LWsfHR_fJMd_7FKdp51QPHekiwELjFgPE6ZBBC0X39TDgbYRS4WyLpq25JfsAILHFLw1gxSIPIP9ebsIH7Er3AfE1YxreuyJVMQx1PfzboNm_r-F3nNxf8_a6v1g"
-var idToken = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjgyZTZiMWM5MjFmYTg2NzcwZjNkNTBjMTJjMTVkNmVhY2E4ZjBkMzUiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiUGV0ZXIgR29kYm9sdCIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS0vQUF1RTdtRFR1YTcyM19USnpKUFBZMHNRM3VMQ0tvck5kdWRwR09GTzM1VlMiLCJwdWJsaWMiOmZhbHNlLCJhZG1pbiI6dHJ1ZSwib3duZXIiOnRydWUsImFwcHJvdmVkVXNlciI6dHJ1ZSwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL2h1dDM0ZGF0YWh1YiIsImF1ZCI6Imh1dDM0ZGF0YWh1YiIsImF1dGhfdGltZSI6MTU4NDMyNDU5NywidXNlcl9pZCI6IlVPdWphdk10VkpZT3VHM3NwYzROZFF6MWF1ajIiLCJzdWIiOiJVT3VqYXZNdFZKWU91RzNzcGM0TmRRejFhdWoyIiwiaWF0IjoxNTg0MzI0NjAwLCJleHAiOjE1ODQzMjgyMDAsImVtYWlsIjoicGV0ZXJAaHV0MzQuaW8iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjExMzI2ODUyODQ1Mzc2NjYyMzcyNyJdLCJlbWFpbCI6WyJwZXRlckBodXQzNC5pbyJdfSwic2lnbl9pbl9wcm92aWRlciI6Imdvb2dsZS5jb20ifX0.p4hYiWzRV5fCGSF5sMJ8x_kfgx-EmLu9arcTt_iNoe8bmjr8Cuf1atleC70CVfNeV3GB7ODdeeJrZety9R96MV-vt2fZ8TSzmTPc1I3jWukVyP_xjhDRHgm1pcsl90Kcj9xNe4dVDsX760WnaitRJ-kYEhDsCviNUsFca5ezGoyecCbI8dNoZwwKUGOIlLAaIP58zKY4YFmVH1n7TaJUIwgFeuSXedSmittZy7ip7aYGLw2Jp2j0Qv7mhhPlZMXJVs8guIsiKt2aCRmD6oghPEqWlwMs1QgykSk2nV6aU7CQbUnCSX4wHyZy57Jw708fxdqjsip-mcxKg0Fun7onKA"
+var dataTable, datasetId, accessToken, idToken, apiURL
 
 function nameDataset() {
 
@@ -61,6 +52,9 @@ function deleteDataset() {
 
 async function getDatasetsToDownload() {
 
+    accessToken = document.getElementById("accessToken").value;
+    idToken = document.getElementById("idToken").value;
+    apiURL =  document.getElementById("apiURL").value;
 
     console.log('getting list of datasets available immediately to download')
     //gets all available datasets from the hub
@@ -170,7 +164,12 @@ async function getDatasets() {
 
 async function getDataset() {
 
+    accessToken = document.getElementById("accessToken").value;
+    idToken = document.getElementById("idToken").value;
+    apiURL =  document.getElementById("apiURL").value;
+
     datasetId = document.getElementById("inputDatasetId").value;
+
     console.log('getting dataset ')
 
     //gets all available datasets from the hub

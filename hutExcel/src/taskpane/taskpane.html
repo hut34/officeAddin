@@ -28,9 +28,26 @@
     <header class="ms-welcome__header ms-bgColor-neutralLight">
         <img width="90" height="90" src="../../assets/Hut34logoorange.png" alt="Hut34" title="Contoso" />
         <h1 class="ms-font-su ">Data Connector</h1>
+
+
+        <div class="ms-TextField ms-TextField--underlined">
+            <label class="ms-Label">API Url</label>
+            <input id="apiURL" class="ms-TextField-field" type="text" value="" placeholder="">
+        </div>
+
+        <div class="ms-TextField ms-TextField--underlined">
+            <label class="ms-Label">Access Token</label>
+            <input id="accessToken" class="ms-TextField-field" type="text" value="" placeholder="">
+        </div>
+
+        <div class="ms-TextField ms-TextField--underlined">
+            <label class="ms-Label">ID Token</label>
+            <input id="idToken" class="ms-TextField-field" type="text" value="" placeholder="">
+        </div>
+
     </header>
     <section id="sideload-msg" class="ms-welcome__main">
-        <h2 class="ms-font-xl">Powering agile datarooney.</h2>
+        <h2 class="ms-font-xl">Powering agile data.</h2>
     </section>
 
     <main id="app-body" class="ms-welcome__main ms-bgColor-neutralLight" style="display: none;">
@@ -38,21 +55,7 @@
 
 
         <!-- <p><button class="ms-Button" id="create-table">Create Table</button></p> -->
-        <p><button class="ms-Button" id="getDatasets">Datasets to download</button></p>
-        <p><button class="ms-Button" id="getDatasetsToPurchase">Datasets to Purchase</button></p>
-        <p><button class="ms-Button" id="getDataset">Get a dataset</button></p>
-
-
-            <div class="ms-TextField ms-TextField--underlined">
-                <label class="ms-Label">Dataset ID</label>
-                <input id="inputDatasetId" class="ms-TextField-field" type="text" value="" placeholder="">
-            </div>
-
-        <p>
-            <button id="getDatasetButton" class="ms-Button ms-Button--primary">
-                <span class="ms-Button-label">Go get it</span>
-            </button>
-        </p>
+        <p><button class="ms-Button" id="getDatasets">Get downloadble datasets</button></p>
 
         <script type="text/javascript">
             var ButtonElements = document.querySelectorAll(".ms-Button");
@@ -72,6 +75,18 @@
 
 
         <div id="listOfDatasets" style="display:none;">
+
+            <div class="ms-TextField ms-TextField--underlined">
+                <label class="ms-Label">Dataset ID</label>
+                <input id="inputDatasetId" class="ms-TextField-field" type="text" value="" placeholder="">
+            </div>
+
+            <p>
+                <button id="getDatasetButton" class="ms-Button ms-Button--primary">
+                    <span class="ms-Button-label">Go get it</span>
+                </button>
+            </p>
+
         <ul class="ms-List" id="theList">
 
 
