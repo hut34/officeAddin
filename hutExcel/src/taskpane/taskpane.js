@@ -142,6 +142,8 @@ async function getDataset() {
 
 async function uploadDataset() {
 
+    let hutHeaders = []
+
     console.log('uploading')
     Excel.run(function (context) {
 
@@ -161,10 +163,27 @@ async function uploadDataset() {
                 var headerValues = headerRange.values;
                 var bodyValues = bodyRange.values;
 
-                console.log('we have the table, which is an update of '+datasetId)
-                console.log(headerValues)
-                console.log(bodyValues)
+                //console.log('we have the table, which is an update of '+datasetId)
+                //console.log(headerValues)
+                //console.log(bodyValues)
 
+                //prep the data structure, and send it over to the hut;
+
+
+                headerValues[0].forEach(function(header) {
+
+                    let headObject = {}
+                    headObject.name = header
+                    headObject.description = header
+                    headObject.type = "string"
+
+                    hutHeaders.push(headObject)
+
+                })
+
+
+                let options = ''
+                sendToTheHut(hutHeaders, bodyValues, options)
             });
     }).catch();
 
@@ -216,4 +235,13 @@ function createTable() {
           console.log("Debug info: " + JSON.stringify(error.debugInfo));
         }
       });
+}
+
+async function sendToTheHut(cols, rows, opts) {
+
+    console.log('any good?')
+    console.log(cols)
+    console.log(rows)
+
+
 }
