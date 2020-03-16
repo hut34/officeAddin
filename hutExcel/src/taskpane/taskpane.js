@@ -170,10 +170,7 @@ async function getDatasets() {
 
 async function getDataset() {
 
-
     datasetId = document.getElementById("inputDatasetId").value;
-
-    if (!datasetId) { datasetId = 'JULFH7RY5oG9sTEaZaxe' }
     console.log('getting dataset ')
 
     //gets all available datasets from the hub
