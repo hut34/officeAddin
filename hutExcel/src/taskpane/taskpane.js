@@ -52,7 +52,7 @@ async function getDatasetsToDownload() {
     myJson.forEach(function(dataset) {
         console.log(dataset.data.name)
         var li = document.createElement("li");
-        li.className = "ms-ListItem is-unread"
+        li.className = "ms-ListItem"
         li.innerHTML = '' +
             '                <span class="ms-ListItem-primaryText" id="datasetName">'+ dataset.data.name +'</span>\n' +
             '                <!-- <span class="ms-ListItem-secondaryText">Meeting notes</span> -->\n' +
@@ -67,7 +67,7 @@ async function getDatasetsToDownload() {
         ul.appendChild(li);
     })
 
-    document.getElementById("listOfDatasets").style = "display:block;";
+    document.getElementById("listOfDatasets").style = "display:block; width:100%;";
 
     //add to the list
 
