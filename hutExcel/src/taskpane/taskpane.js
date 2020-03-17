@@ -15,6 +15,7 @@ Office.onReady(info => {
     document.getElementById("getDatasets").onclick = getDatasetsToDownload;
     document.getElementById("getDatasetButton").onclick = getDataset;
     document.getElementById("uploadDataset").onclick = uploadDataset;
+    document.getElementById("uploadNewDataset").onclick = uploadNewDataset;
 
     document.getElementById("sideload-msg").style.display = "none";
     document.getElementById("app-body").style.display = "flex";
@@ -22,6 +23,48 @@ Office.onReady(info => {
 });
 
 var dataTable, datasetId, accessToken, idToken, apiURL
+
+async function uploadNewDataset() {
+    console.log('uploading new dataset')
+
+    accessToken = document.getElementById("accessToken").value;
+    idToken = document.getElementById("idToken").value;
+    apiURL =  document.getElementById("apiURL").value;
+
+    Excel.run(function (context) {
+        var sheet = context.workbook.worksheets.getActiveWorksheet();
+        var range = sheet.getUsedRange();
+        let thisData = range.load("values");
+
+        return context.sync()
+            .then(function () {
+                let length = thisData.values.length
+                console.log('we got the data with '+length+' rows');
+
+                let headerNames = thisData.values.shift()
+                let rowData = thisData.values
+
+                //prep the data for the hut, then send it over;
+                let hutHeaders = []
+                headerNames.forEach(function(header) {
+
+                    let headObject = {}
+                    headObject.name = header
+                    headObject.description = header
+                    headObject.type = "string"
+
+                    hutHeaders.push(headObject)
+
+                })
+
+                let coverImage = "https://images.unsplash.com/photo-1558588942-930faae5a389?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2250&q=80"
+                let name = "Excel generated data"
+
+                sendToTheHut(hutHeaders, rowData, name, coverImage)
+            });
+    }).catch();
+
+}
 
 async function getDatasetsToDownload() {
 
@@ -181,7 +224,7 @@ async function uploadDataset() {
 
                 })
 
-                sendToTheHut(hutHeaders, bodyValues)
+                sendToTheHut(hutHeaders, bodyValues, "Dataset created from Excel, derived from "+datasetId, "https://images.unsplash.com/photo-1529078155058-5d716f45d604?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1349&q=80")
             });
     }).catch();
 
@@ -235,16 +278,14 @@ function createTable() {
       });
 }
 
-async function sendToTheHut(cols, rows) {
+async function sendToTheHut(cols, rows, name, coverImage) {
 
     let data = {}
 
-
-    data.name = "Dataset created from Excel, derived from "+datasetId
+    data.name = name
     data.header = cols
     data.data = rows
-    data.coverImage = "https://images.unsplash.com/photo-1529078155058-5d716f45d604?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1349&q=80"
-
+    data.coverImage = coverImage
 
     const response = await fetch(apiURL+'/user/createDataset',
         {
